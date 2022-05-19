@@ -4,7 +4,7 @@ class Board {
       //data needed for the board
       this.s = size;
       this.cells = [];
-      this.cSize = (width-1)/this.s;
+      this.cellSize = ((height * 0.9) / 10)/this.s; //TODO make this value global
           //data dealing with players
       this.p1 = p1;
       this.p2 = p2;
@@ -15,8 +15,8 @@ class Board {
       this.newGame();
     }
     
-    display(){
-      let cSize = this.cSize;
+    display(x, y){
+      let cellSize = this.cellSize;
       if (this.winState){
         textSize(24);
         textAlign(CENTER);
@@ -25,10 +25,10 @@ class Board {
         
       } else {
         this.cells.forEach(function(element){
-          rect(element.r*cSize, element.c*cSize, cSize, cSize);
+          rect(element.r*cellSize + (cellSize * 3 * x * 1.1), element.c*cellSize + (cellSize * 3 * y * 1.1), cellSize, cellSize);
           textSize(64);
           textAlign(CENTER);
-          text(element.t, element.r*cSize+cSize/2, element.c*cSize+cSize/1.5);
+          text(element.t, element.r*cellSize+cellSize/2, element.c*cellSize+cellSize/1.5);
         });
       }
       

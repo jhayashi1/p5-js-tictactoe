@@ -1,12 +1,10 @@
-let b;
-let p1;
-let p2;
 let turn;
 let score_div;
 
-const TOTAL = 5;
+const TOTAL = 10;
 let boards = [];
-let players = [];
+let playersX = [];
+let playersO = [];
 let counter = 0;
 let slider;
 let neat;
@@ -29,6 +27,19 @@ function setup() {
   // score_div = createDiv('').size(100, 25);
   // b = new Board(3, p1, p2); //this object tracks changes made to the board
 
+  createCanvas(displayWidth, displayHeight);
+  score_div = createDiv('').size(100, 25);
+  for (let i = 0; i < TOTAL; i++) {
+    playersX[i] = new Array(TOTAL);
+    playersO[i] = new Array(TOTAL);
+    boards[i] = new Array(TOTAL);
+    for (let j = 0; j < TOTAL; j++) {
+      playersX[i][j] = new Player("X");
+      playersO[i][j] = new Player("Y");
+      boards[i][j] = new Board(3, playersX[i], playersO[i]);
+    }
+  }
+
   neat = new NEAT(config);
 }
 
@@ -36,7 +47,12 @@ function draw() {
   // background(220);
   // b.display();
 
-  background(0);
+  background(220);
+  for (let i = 0; i < TOTAL; i++) {
+    for (let j = 0; j < TOTAL; j++) {
+      boards[i][j].display(i, j);
+    }
+  }
 }
 
 // function mousePressed(){
