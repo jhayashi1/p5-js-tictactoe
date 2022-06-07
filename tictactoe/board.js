@@ -1,11 +1,12 @@
 class Board {
-	
-    constructor(size, p1, p2){
+
+    constructor(p1, p2){
       //data needed for the board
-      this.s = size;
+      this.BOARD_SIZE = 3;
+      //Cell size = (height of canvas * 0.9) / num boards / cell dimensions
+      this.CELL_SIZE = ((height * 0.9) / TOTAL) / this.BOARD_SIZE;
       this.cells = [];
-      this.cellSize = ((height * 0.9) / 10)/this.s; //TODO make this value global
-          //data dealing with players
+      //data dealing with players
       this.p1 = p1;
       this.p2 = p2;
       this.turn = this.p1.t;
@@ -16,7 +17,7 @@ class Board {
     }
     
     display(x, y){
-      let cellSize = this.cellSize;
+      let CELL_SIZE = this.CELL_SIZE;
       if (this.winState){
         textSize(24);
         textAlign(CENTER);
@@ -25,10 +26,10 @@ class Board {
         
       } else {
         this.cells.forEach(function(element){
-          rect(element.r*cellSize + (cellSize * 3 * x * 1.1), element.c*cellSize + (cellSize * 3 * y * 1.1), cellSize, cellSize);
+          rect(element.r*CELL_SIZE + (CELL_SIZE * 3 * x * 1.1), element.c*CELL_SIZE + (CELL_SIZE * 3 * y * 1.1), CELL_SIZE, CELL_SIZE);
           textSize(64);
           textAlign(CENTER);
-          text(element.t, element.r*cellSize+cellSize/2, element.c*cellSize+cellSize/1.5);
+          text(element.t, element.r * CELL_SIZE + CELL_SIZE / 2, element.c * CELL_SIZE + CELL_SIZE / 1.5);
         });
       }
       
@@ -54,31 +55,23 @@ class Board {
       }
     }
     
-    toggleTurn(){
-        if (this.turn == p1.t){
-          this.turn = p2.t;
-        score_div.html("Turn:" + p2.t);
-      } else {
-          this.turn = p1.t;
-        score_div.html("Turn:" + p1.t);
-      }
-    }
-    
     //this will evaluate if someone has won the game
     checkResult(){
-          let winner;
+      let winner;
       let p1 = this.p1;
       let p2 = this.p2;
-      let rowSums = new Array(this.s);
-      let colSums = new Array(this.s);
-      let diagSums = new Array(this.s);
+      let rowSums = new Array(this.BOARD_SIZE);
+      let colSums = new Array(this.BOARD_SIZE);
+      let diagSums = new Array(this.BOARD_SIZE);
       let numOpen = 9;
-      let s = this.s
-      for (let i=0; i<this.s; i++){
+      let s = this.BOARD_SIZE
+
+      for (let i = 0; i < this.BOARD_SIZE; i++){
         rowSums[i]= 0;
         colSums[i] = 0;
         diagSums[i] = 0;
       }
+
       this.cells.forEach(function(element) {
         rowSums[element.r] += element.v;
         colSums[element.c] += element.v;
@@ -95,7 +88,7 @@ class Board {
             winner = p1.t;
           p1.win();
         }
-        if (element === -1*s){
+        if (element === -1 * s){
             winner = p2.t;
           p2.win();
         }
@@ -105,7 +98,7 @@ class Board {
             winner = p1.t;
           p1.win();
         }
-        if (element === -1*s){
+        if (element === -1 * s){
             winner = p2.t;
           p2.win();
         }
@@ -115,7 +108,7 @@ class Board {
             winner = p1.t;
           p1.win();
         }
-        if (element === -1*s){
+        if (element === -1 * s){
             winner = p2.t;
           p2.win();
         }
@@ -131,8 +124,8 @@ class Board {
       this.turn = this.p1.t;
         score_div.html("Turn:" + this.p1.t);
       this.cells = [];
-      for (let i=0; i<this.s; i++){
-        for (let j=0; j<this.s; j++){
+      for (let i = 0; i < this.BOARD_SIZE; i++){
+        for (let j = 0; j < this.BOARD_SIZE; j++){
           this.cells.push({
             "r": i,
             "c": j,
